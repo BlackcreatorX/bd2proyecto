@@ -4,7 +4,19 @@ from bson import ObjectId
 
 from api.models.game import GameOutput
 
+from typing import Any, Dict, List, Optional
 
+from bson import ObjectId
+
+from api.models.game import GameOutput
+
+
+def safe_dict(value):
+    return value if isinstance(value, dict) else {}
+
+
+def safe_list(value):
+    return value if isinstance(value, list) else []
 def doc_to_game_output(doc: dict) -> GameOutput:
     return GameOutput(
         id=str(doc["_id"]),
@@ -22,26 +34,35 @@ def doc_to_game_output(doc: dict) -> GameOutput:
         capsule_image=doc.get("capsule_image"),
         capsule_imagev5=doc.get("capsule_imagev5"),
         website=doc.get("website"),
-        pc_requirements=doc.get("pc_requirements"),
-        mac_requirements=doc.get("mac_requirements"),
-        linux_requirements=doc.get("linux_requirements"),
-        developers=doc.get("developers"),
-        publishers=doc.get("publishers"),
-        price_overview=doc.get("price_overview"),
-        packages=doc.get("packages"),
-        package_groups=doc.get("package_groups"),
-        platforms=doc.get("platforms"),
-        metacritic=doc.get("metacritic"),
-        categories=doc.get("categories"),
-        genres=doc.get("genres"),
-        screenshots=doc.get("screenshots"),
-        recommendations=doc.get("recommendations"),
-        release_date=doc.get("release_date"),
-        support_info=doc.get("support_info"),
+
+        pc_requirements=safe_dict(doc.get("pc_requirements")),
+        mac_requirements=safe_dict(doc.get("mac_requirements")),
+        linux_requirements=safe_dict(doc.get("linux_requirements")),
+
+        developers=safe_list(doc.get("developers")),
+        publishers=safe_list(doc.get("publishers")),
+
+        price_overview=safe_dict(doc.get("price_overview")),
+
+        packages=safe_list(doc.get("packages")),
+        package_groups=safe_list(doc.get("package_groups")),
+
+        platforms=safe_dict(doc.get("platforms")),
+        metacritic=safe_dict(doc.get("metacritic")),
+
+        categories=safe_list(doc.get("categories")),
+        genres=safe_list(doc.get("genres")),
+        screenshots=safe_list(doc.get("screenshots")),
+
+        recommendations=safe_dict(doc.get("recommendations")),
+        release_date=safe_dict(doc.get("release_date")),
+        support_info=safe_dict(doc.get("support_info")),
+
         background=doc.get("background"),
         background_raw=doc.get("background_raw"),
-        content_descriptors=doc.get("content_descriptors"),
-        ratings=doc.get("ratings"),
+
+        content_descriptors=safe_dict(doc.get("content_descriptors")),
+        ratings=safe_dict(doc.get("ratings")),
     )
 
 

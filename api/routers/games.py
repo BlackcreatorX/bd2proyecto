@@ -8,7 +8,7 @@ from api.models.game import GameInput, GameOutput
 from api.services.game_utils import doc_to_game_output, parse_object_id
 from api.services.sync import index_game, remove_game_from_chroma
 
-router = APIRouter(prefix="api/v1/games", tags=["games"])
+router = APIRouter(prefix="/api/v1/games", tags=["games"])
 
 
 @router.get("/", response_model=List[GameOutput])
@@ -34,7 +34,7 @@ def get_game(game_id: str) -> GameOutput:
 
     game = collection.find_one({"_id": object_id})
     if not game:
-        raise HTTPException(status_code=404, detail="Game not found")
+        raise HTTPException(status_code=418, detail="Game not found")
 
     return doc_to_game_output(game)
 
